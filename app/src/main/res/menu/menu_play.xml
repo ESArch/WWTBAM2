@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_cincuenta"
+        android:title="@string/menu_cincuenta"
+        android:icon="@android:drawable/ic_menu_sort_by_size"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/menu_llamada"
+        android:title="@string/menu_llamada"
+        android:icon="@android:drawable/ic_menu_call"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/menu_publico"
+        android:title="@string/menu_publico"
+        android:icon="@android:drawable/ic_menu_help"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/menu_abanonar"
+        android:title="@string/menu_abandonar"
+        android:icon="@android:drawable/ic_menu_close_clear_cancel"
+        app:showAsAction="always"/>
+</menu>
