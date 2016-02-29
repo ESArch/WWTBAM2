@@ -6,7 +6,7 @@
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/score_table">
+        android:id="@+id/score_table_friends">
 
     </TableLayout>
 </ScrollView>

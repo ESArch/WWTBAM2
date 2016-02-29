@@ -32,10 +32,19 @@
                 android:layout_height="match_parent">
 
                 <include
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    layout="@layout/tab_layout"
-                    android:id="@+id/tab_layout_included"/>
+                    layout="@layout/tab_layout_local"
+                    android:id="@+id/tab_layout_included1"/>
+
+                <include
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    layout="@layout/tab_layout_friends"
+                    android:id="@+id/tab_layout_included2"/>
+
+
 
             </FrameLayout>
 

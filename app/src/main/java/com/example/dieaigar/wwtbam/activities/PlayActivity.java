@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.dieaigar.wwtbam.R;
+import com.example.dieaigar.wwtbam.databases.SQLHelper;
 import com.example.dieaigar.wwtbam.pojo.Question;
 
 import android.content.res.XmlResourceParser;
@@ -61,8 +62,11 @@ public class PlayActivity extends AppCompatActivity {
             loadQuestion(++current);
         else if (right == 4 && view.equals(bAnswer4))
             loadQuestion(++current);
-        else
+        else {
             tvQuestion.setText("You lose");
+            SQLHelper.getInstance(this).addScore("dieaigar", "250");
+        }
+
     }
 
 
