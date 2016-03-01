@@ -106,47 +106,45 @@ public class SettingsActivity extends AppCompatActivity {
             this.friendname = friendname;
         }
 
-        public boolean isNetworkConnected(int network) {
+        public boolean isNetworkConnected() {
+            // Get a reference to the ConnectivityManager
             ConnectivityManager manager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-            NetworkInfo info;
-            switch(network) {
-                case 0:
-                    info = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-                    break;
-                case 1:
-                    info = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-                    break;
-                default:
-                    info = manager.getActiveNetworkInfo();
-                    break;
-            }
+            // Get information about the default active data network
+            NetworkInfo info = manager.getActiveNetworkInfo();
+            // There will be connectivity when there is a default connected network
             return ((info != null) && (info.isConnected()));
         }
 
         @Override
         protected Void doInBackground(Void... params) {
 
-            Uri.Builder builder = new Uri.Builder();
-            builder.scheme("http");
-            builder.authority("wwtbamandroid.appspot.com");
-            builder.appendPath("rest");
-            builder.appendPath("friends");
-            String body = "name=" + username +"&friend_name=" + friendname;
-            try {
-                URL url = new URL(builder.build().toString());
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("POST");
-                connection.setDoInput(true);
-                connection.setDoOutput(true);
-                OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
-                writer.write(body);
-                writer.flush();
-                writer.close();
-                // Get response
-                connection.disconnect();
-            } catch (IOException e) {
-                e.printStackTrace();
+            if(isNetworkConnected()){
+                Uri.Builder builder = new Uri.Builder();
+                builder.scheme("http");
+                builder.authority("wwtbamandroid.appspot.com");
+                builder.appendPath("rest");
+                builder.appendPath("friends");
+                String body = "name=" + username +"&friend_name=" + friendname;
+                try {
+                    URL url = new URL(builder.build().toString());
+                    Log.d("WS DEBUG", "Request: " + url.toString());
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    connection.setRequestMethod("POST");
+                    connection.setDoInput(true);
+                    connection.setDoOutput(true);
+                    OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
+                    writer.write(body);
+                    writer.flush();
+                    writer.close();
+                    // Get response
+                    Log.d("WS DEBUG", "Response code: " + connection.getResponseCode());
+                    connection.disconnect();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
+
+
 
             return null;
         }
@@ -155,5 +153,15 @@ public class SettingsActivity extends AppCompatActivity {
 
         }
     }
+
+
+
+
+/*
+Si sobre la conexión ejecutas getResponseCode() obtendrás el código de respuesta HTTP. Un 200 es HTTP_OK, un 400 es error en cliente, un 500 error en el servidor...
+http://wwtbamandroid.appspot.com/rest/friends?name=ddandres
+http://wwtbamandroid.appspot.com/rest/highscores?name=ddandres
+*/
+
 
 }

@@ -1,8 +1,15 @@
 package com.example.dieaigar.wwtbam.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Xml;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,7 +23,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.example.dieaigar.wwtbam.R;
@@ -31,7 +42,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 public class PlayActivity extends AppCompatActivity {
 
-    TextView tvQuestion;
+    TextView tvQuestion, tvQuestionNumber, tvPrize;
     Button bAnswer1, bAnswer2, bAnswer3, bAnswer4;
     int right, audience, phone, fifty1, fifty2, current;
 
@@ -41,6 +52,8 @@ public class PlayActivity extends AppCompatActivity {
         setContentView(R.layout.activity_play);
 
         tvQuestion = (TextView) findViewById(R.id.tvQuestion);
+        tvQuestionNumber = (TextView) findViewById(R.id.tvQuestionNumber);
+        tvPrize = (TextView) findViewById(R.id.tvPrize);
         bAnswer1 = (Button) findViewById(R.id.bAnswer1);
         bAnswer2 = (Button) findViewById(R.id.bAnswer2);
         bAnswer3 = (Button) findViewById(R.id.bAnswer3);
@@ -54,24 +67,37 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     public void checkAnswer(View view){
-        if(right == 1 && view.equals(bAnswer1))
-            loadQuestion(++current);
-        else if (right == 2 && view.equals(bAnswer2))
-            loadQuestion(++current);
-        else if (right == 3 && view.equals(bAnswer3))
-            loadQuestion(++current);
-        else if (right == 4 && view.equals(bAnswer4))
-            loadQuestion(++current);
-        else {
+        current++;
+        if(isRightAnswer(view) && current < 16)
+            loadQuestion(current);
+        else if (isRightAnswer(view) && current == 16) {
+            tvQuestion.setText("You win");
+            leave(true);
+        } else {
             tvQuestion.setText("You lose");
-            SQLHelper.getInstance(this).addScore("dieaigar", "250");
+            leave(false);
         }
 
     }
 
-
+    private boolean isRightAnswer(View view){
+        if(right == 1 && view.equals(bAnswer1))
+            return true;
+        else if (right == 2 && view.equals(bAnswer2))
+            return true;
+        else if (right == 3 && view.equals(bAnswer3))
+            return true;
+        else if (right == 4 && view.equals(bAnswer4))
+            return true;
+        else {
+            return false;
+        }
+    }
 
     private void loadQuestion(int index){
+
+        tvQuestionNumber.setText("Question: " + current);
+        tvPrize.setText("Play for: " + computeScore(current));
 
         try{
 //            FileInputStream fis = openFileInput(getResources().getXml(R.xml.questions));
@@ -133,16 +159,17 @@ public class PlayActivity extends AppCompatActivity {
         Intent intent = null;
         switch(item.getItemId()) {
             case R.id.menu_abanonar:
-                Toast.makeText(PlayActivity.this, getString(R.string.menu_abandonar), Toast.LENGTH_SHORT).show();
+                if(current > 1)
+                    leave(false);
                 break;
             case R.id.menu_publico:
-                Toast.makeText(PlayActivity.this, getString(R.string.menu_publico), Toast.LENGTH_SHORT).show();
+                displayRightAnswer(audience);
                 break;
             case R.id.menu_llamada:
-                Toast.makeText(PlayActivity.this, getString(R.string.menu_llamada), Toast.LENGTH_SHORT).show();
+                displayRightAnswer(phone);
                 break;
             case R.id.menu_cincuenta:
-                Toast.makeText(PlayActivity.this, getString(R.string.menu_cincuenta), Toast.LENGTH_SHORT).show();
+                displayWrongAnswer(fifty1, fifty2);
                 break;
         }
 
@@ -153,235 +180,159 @@ public class PlayActivity extends AppCompatActivity {
         return true;
     }
 
-    public List<Question> generateQuestionList() {
-        List<Question> list = new ArrayList<Question>();
-        Question q = null;
+    private void displayRightAnswer(int answer){
+        bAnswer1.setBackgroundColor(getResources().getColor(R.color.deafultAnswer));
+        bAnswer2.setBackgroundColor(getResources().getColor(R.color.deafultAnswer));
+        bAnswer3.setBackgroundColor(getResources().getColor(R.color.deafultAnswer));
+        bAnswer4.setBackgroundColor(getResources().getColor(R.color.deafultAnswer));
 
-        q = new Question(
-                "1",
-                "Which is the Sunshine State of the US?",
-                "North Carolina",
-                "Florida",
-                "Texas",
-                "Arizona",
-                "2",
-                "2",
-                "2",
-                "1",
-                "4"
-        );
-        list.add(q);
+        switch (answer){
+            case 1:
+                bAnswer1.setBackgroundColor(getResources().getColor(R.color.rightAnswer));
+                break;
+            case 2:
+                bAnswer2.setBackgroundColor(getResources().getColor(R.color.rightAnswer));
+                break;
+            case 3:
+                bAnswer3.setBackgroundColor(getResources().getColor(R.color.rightAnswer));
+                break;
+            case 4:
+                bAnswer4.setBackgroundColor(getResources().getColor(R.color.rightAnswer));
+                break;
+        }
 
-        q = new Question(
-                "2",
-                "Which of these is not a U.S. state?",
-                "New Hampshire",
-                "Washington",
-                "Wyoming",
-                "Manitoba",
-                "4",
-                "4",
-                "4",
-                "2",
-                "3"
-        );
-        list.add(q);
+    }
 
-        q = new Question(
-                "3",
-                "What is Book 3 in the Pokemon book series?",
-                "Charizard",
-                "Island of the Giant Pokemon",
-                "Attack of the Prehistoric Pokemon",
-                "I Choose You!",
-                "3",
-                "2",
-                "3",
-                "1",
-                "4"
-        );
-        list.add(q);
+    private void displayWrongAnswer(Integer ... answers){
+        bAnswer1.setBackgroundColor(getResources().getColor(R.color.deafultAnswer));
+        bAnswer2.setBackgroundColor(getResources().getColor(R.color.deafultAnswer));
+        bAnswer3.setBackgroundColor(getResources().getColor(R.color.deafultAnswer));
+        bAnswer4.setBackgroundColor(getResources().getColor(R.color.deafultAnswer));
+        for(Integer answer : answers){
+            switch (answer){
+                case 1:
+                    bAnswer1.setBackgroundColor(getResources().getColor(R.color.wrongAnswer));
+                    break;
+                case 2:
+                    bAnswer2.setBackgroundColor(getResources().getColor(R.color.wrongAnswer));
+                    break;
+                case 3:
+                    bAnswer3.setBackgroundColor(getResources().getColor(R.color.wrongAnswer));
+                    break;
+                case 4:
+                    bAnswer4.setBackgroundColor(getResources().getColor(R.color.wrongAnswer));
+                    break;
+            }
+        }
+    }
 
-        q = new Question(
-                "4",
-                "Who was forced to sign the Magna Carta?",
-                "King John",
-                "King Henry VIII",
-                "King Richard the Lion-Hearted",
-                "King George III",
-                "1",
-                "3",
-                "1",
-                "2",
-                "3"
-        );
-        list.add(q);
+    private void leave(boolean won){
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String name = sharedPrefs.getString("userName", getResources().getString(R.string.nameless));
+        String score;
+        if(won)
+            score = computeScore(current-1);
+        else
+            score = computeScore(current-2);
 
-        q = new Question(
-                "5",
-                "Which ship was sunk in 1912 on its first voyage, although people said it would never sink?",
-                "Monitor",
-                "Royal Caribean",
-                "Queen Elizabeth",
-                "Titanic",
-                "4",
-                "4",
-                "4",
-                "1",
-                "2"
-        );
-        list.add(q);
+        //Save score in the local DB
+        SQLHelper.getInstance(this).addScore(name, score);
+        //Publish the score in the web service
+        MyAsyncTask myAsyncTask = new MyAsyncTask();
+        myAsyncTask.setUsername(name);
+        myAsyncTask.setScore(score);
+        myAsyncTask.execute();
 
-        q = new Question(
-                "6",
-                "Who was the third James Bond actor in the MGM films? (Do not include &apos;Casino Royale&apos;.)",
-                "Roger Moore",
-                "Pierce Brosnan",
-                "Timothy Dalton",
-                "Sean Connery",
-                "1",
-                "3",
-                "3",
-                "2",
-                "3"
-        );
-        list.add(q);
 
-        q = new Question(
-                "7",
-                "Which is the largest toothed whale?",
-                "Humpback Whale",
-                "Blue Whale",
-                "Killer Whale",
-                "Sperm Whale",
-                "4",
-                "2",
-                "2",
-                "2",
-                "3"
-        );
-        list.add(q);
+    }
 
-        q = new Question(
-                "8",
-                "In what year was George Washington born?",
-                "1728",
-                "1732",
-                "1713",
-                "1776",
-                "2",
-                "2",
-                "2",
-                "1",
-                "4"
-        );
-        list.add(q);
+    private String computeScore(int current){
+        switch(current){
+            case 0: return "0";
+            case 1: return "100";
+            case 2: return "200";
+            case 3: return "300";
+            case 4: return "500";
+            case 5: return "1000";
+            case 6: return "2000";
+            case 7: return "4000";
+            case 8: return "8000";
+            case 9: return "16000";
+            case 10: return "32000";
+            case 11: return "64000";
+            case 12: return "125000";
+            case 13: return "250000";
+            case 14: return "500000";
+            case 15: return "1000000";
+        }
+        return "";
+    }
 
-        q = new Question(
-                "9",
-                "Which of these rooms is in the second floor of the White House?",
-                "Red Room",
-                "China Room",
-                "State Dining Room",
-                "East Room",
-                "2",
-                "2",
-                "2",
-                "3",
-                "4"
-        );
-        list.add(q);
+    private class MyAsyncTask
+            extends AsyncTask<Void, HashMap<String,String>, Void> {
+        String username, score;
 
-        q = new Question(
-                "10",
-                "Which Pope began his reign in 963?",
-                "Innocent III",
-                "Leo VIII",
-                "Gregory VII",
-                "Gregory I",
-                "2",
-                "1",
-                "2",
-                "3",
-                "4"
-        );
-        list.add(q);
+        public String getUsername() {
+            return username;
+        }
 
-        q = new Question(
-                "11",
-                "What is the second longest river in South America?",
-                "Parana River",
-                "Xingu River",
-                "Amazon River",
-                "Rio Orinoco",
-                "1",
-                "1",
-                "1",
-                "2",
-                "3"
-        );
-        list.add(q);
+        public void setUsername(String username) {
+            this.username = username;
+        }
 
-        q = new Question(
-                "12",
-                "What Ford replaced the Model T?",
-                "Model U",
-                "Model A",
-                "Edsel",
-                "Mustang",
-                "2",
-                "4",
-                "4",
-                "1",
-                "3"
-        );
-        list.add(q);
+        public String getScore() {
+            return score;
+        }
 
-        q = new Question(
-                "13",
-                "When was the first picture taken?",
-                "1860",
-                "1793",
-                "1912",
-                "1826",
-                "4",
-                "4",
-                "4",
-                "1",
-                "3"
-        );
-        list.add(q);
+        public void setScore(String score) {
+            this.score = score;
+        }
 
-        q = new Question(
-                "14",
-                "Where were the first Winter Olympics held?",
-                "St. Moritz, Switzerland",
-                "Stockholm, Sweden",
-                "Oslo, Norway",
-                "Chamonix, France",
-                "4",
-                "1",
-                "4",
-                "2",
-                "3"
-        );
-        list.add(q);
+        public boolean isNetworkConnected() {
+            // Get a reference to the ConnectivityManager
+            ConnectivityManager manager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+            // Get information about the default active data network
+            NetworkInfo info = manager.getActiveNetworkInfo();
+            // There will be connectivity when there is a default connected network
+            return ((info != null) && (info.isConnected()));
+        }
 
-        q = new Question(
-                "15",
-                "Which of these is not the name of a New York tunnel?",
-                "Brooklyn-Battery",
-                "Lincoln",
-                "Queens Midtown",
-                "Manhattan",
-                "4",
-                "4",
-                "4",
-                "1",
-                "3"
-        );
-        list.add(q);
+        @Override
+        protected Void doInBackground(Void... params) {
 
-        return list;
+            if (isNetworkConnected()) {
+                Uri.Builder builder = new Uri.Builder();
+                builder.scheme("http");
+                builder.authority("wwtbamandroid.appspot.com");
+                builder.appendPath("rest");
+                builder.appendPath("highscores");
+                String body = "name=" + username + "&score=" + score;
+                try {
+                    URL url = new URL(builder.build().toString());
+                    Log.d("WS DEBUG", "Request: " + url.toString());
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    connection.setRequestMethod("PUT");
+                    connection.setDoInput(true);
+                    connection.setDoOutput(true);
+                    OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
+                    writer.write(body);
+                    writer.flush();
+                    writer.close();
+                    // Get response
+                    Log.d("WS DEBUG", "Response code: " + connection.getResponseCode());
+                    connection.disconnect();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(HashMap<String, String>... values) {
+
+        }
     }
 }
