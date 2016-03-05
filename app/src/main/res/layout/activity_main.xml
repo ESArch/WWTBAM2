@@ -10,25 +10,40 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".activities.MainActivity">
 
-    <ImageButton
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:text="Who wants to be a millionare?"
+        android:textSize="50sp"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccent"
+        android:textStyle="bold"/>
+
+
+    <Button
         android:id="@+id/bPlay"
-        android:onClick="launchActivity"/>
+        android:onClick="launchActivity"
+        android:text="Play"
+        android:drawableLeft="@drawable/ic_play"
+        android:paddingLeft="50dp"
+        style="@style/ButtonTheme"/>
 
-    <ImageButton
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+    <Button
         android:id="@+id/bScore"
-        android:onClick="launchActivity"/>
+        android:text="Scores"
+        android:onClick="launchActivity"
+        android:drawableLeft="@drawable/ic_scores"
+        android:paddingLeft="50dp"
+        style="@style/ButtonTheme"/>
 
-    <ImageButton
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+    <Button
         android:id="@+id/bSettings"
-        android:onClick="launchActivity"/>
+        android:text="Settings"
+        android:onClick="launchActivity"
+        android:drawableLeft="@drawable/ic_settings"
+        android:paddingLeft="50dp"
+        style="@style/ButtonTheme"
+
+       />
 
 </LinearLayout>

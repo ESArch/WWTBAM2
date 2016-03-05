@@ -35,7 +35,8 @@
         android:id="@+id/tvQuestion"
         android:layout_below="@+id/tvQuestionNumber"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="25dp" />
+        android:layout_marginTop="25dp"
+        android:textSize="24sp"/>
 
     <Button
         android:layout_width="fill_parent"
@@ -43,8 +44,10 @@
         android:text="Answer 1"
         android:id="@+id/bAnswer1"
         android:layout_below="@+id/tvQuestion"
-        android:layout_marginTop="38dp"
-        android:onClick="checkAnswer"/>
+        android:layout_marginTop="40dp"
+        android:onClick="checkAnswer"
+        android:textSize="20sp"
+        style="@style/ButtonTheme"/>
 
     <Button
         android:layout_width="fill_parent"
@@ -52,7 +55,9 @@
         android:text="Answer 2"
         android:id="@+id/bAnswer2"
         android:layout_below="@+id/bAnswer1"
-        android:onClick="checkAnswer"/>
+        android:onClick="checkAnswer"
+        android:textSize="20sp"
+        style="@style/ButtonTheme"/>
 
     <Button
         android:layout_width="fill_parent"
@@ -60,7 +65,9 @@
         android:text="Answer 3"
         android:id="@+id/bAnswer3"
         android:layout_below="@+id/bAnswer2"
-        android:onClick="checkAnswer"/>
+        android:onClick="checkAnswer"
+        android:textSize="20sp"
+        style="@style/ButtonTheme"/>
 
     <Button
         android:layout_width="fill_parent"
@@ -68,6 +75,8 @@
         android:text="Answer 4"
         android:id="@+id/bAnswer4"
         android:layout_below="@+id/bAnswer3"
-        android:onClick="checkAnswer"/>
+        android:onClick="checkAnswer"
+        android:textSize="20sp"
+        style="@style/ButtonTheme"/>
 
 </RelativeLayout>

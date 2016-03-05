@@ -11,7 +11,7 @@
     <string name="menu_llamada">Joker 2</string>
     <string name="menu_cincuenta">Joker 3</string>
     <string name="menu_abandonar">Leave</string>
-    <string name="title_activity_settings2">Settings</string>
+    <string name="currency">$</string>
 
     <!-- Strings related to Settings -->
 

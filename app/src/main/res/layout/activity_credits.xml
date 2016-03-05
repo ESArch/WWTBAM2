@@ -10,19 +10,23 @@
     tools:context=".activities.CreditsActivity">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="360dp"
+        android:layout_height="360dp"
         android:id="@+id/ivCredits"
-        android:layout_centerVertical="true"
+        android:src="@drawable/koala"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/koala"/>
+        android:layout_below="@id/ivCredits"
+        />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/authors"
         android:id="@+id/tvCredits"
-        android:layout_marginBottom="33dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/ivCredits"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="10dp"
+        android:textColor="@color/colorTextSecondary"
+        android:textSize="24sp"/>
 </RelativeLayout>

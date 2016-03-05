@@ -44,7 +44,8 @@ public class PlayActivity extends AppCompatActivity {
 
     TextView tvQuestion, tvQuestionNumber, tvPrize;
     Button bAnswer1, bAnswer2, bAnswer3, bAnswer4;
-    int right, audience, phone, fifty1, fifty2, current;
+    int right, audience, phone, fifty1, fifty2, current, usedHelps, maxHelps;
+    String score;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,11 +60,30 @@ public class PlayActivity extends AppCompatActivity {
         bAnswer3 = (Button) findViewById(R.id.bAnswer3);
         bAnswer4 = (Button) findViewById(R.id.bAnswer4);
 
-        current = 1;
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        maxHelps = Integer.valueOf(sharedPrefs.getString("help", "1"));
 
+
+
+
+    }
+
+    @Override
+    protected void onPause() {
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
+        editor.putInt("usedHelps", usedHelps);
+        editor.putInt("currentQuestion", current);
+        editor.apply();
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        current = sharedPrefs.getInt("currentQuestion", 1);
+        usedHelps = sharedPrefs.getInt("usedHelps", 0);
         loadQuestion(current);
-
-
+        super.onResume();
     }
 
     public void checkAnswer(View view){
@@ -71,11 +91,9 @@ public class PlayActivity extends AppCompatActivity {
         if(isRightAnswer(view) && current < 16)
             loadQuestion(current);
         else if (isRightAnswer(view) && current == 16) {
-            tvQuestion.setText("You win");
-            leave(true);
+            win();
         } else {
-            tvQuestion.setText("You lose");
-            leave(false);
+            fail();
         }
 
     }
@@ -97,7 +115,9 @@ public class PlayActivity extends AppCompatActivity {
     private void loadQuestion(int index){
 
         tvQuestionNumber.setText("Question: " + current);
-        tvPrize.setText("Play for: " + computeScore(current));
+        tvPrize.setText("Play for: " + computeScore(current) + " " + getResources().getString(R.string.currency));
+        clearAnswer();
+        showAnswers();
 
         try{
 //            FileInputStream fis = openFileInput(getResources().getXml(R.xml.questions));
@@ -111,7 +131,6 @@ public class PlayActivity extends AppCompatActivity {
             while (XmlPullParser.END_DOCUMENT != eventType) {
                 switch (eventType) {
                     case XmlPullParser.START_TAG:
-                        System.out.println(parser.getName());
                         if(parser.getName().equals("question") && Integer.valueOf(parser.getAttributeValue(null, "number")) == index){
                             tvQuestion.setText(parser.getAttributeValue(null, "text"));
                             bAnswer1.setText(parser.getAttributeValue(null, "answer1"));
@@ -127,7 +146,6 @@ public class PlayActivity extends AppCompatActivity {
                         }
                         break;
                     case XmlPullParser.TEXT:
-                        System.out.println(parser.getText());
                         break;
                 }
                 parser.next();
@@ -146,8 +164,6 @@ public class PlayActivity extends AppCompatActivity {
         ;
     }
 
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_play, menu);
@@ -156,84 +172,128 @@ public class PlayActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent = null;
         switch(item.getItemId()) {
             case R.id.menu_abanonar:
-                if(current > 1)
-                    leave(false);
+                    quit();
                 break;
             case R.id.menu_publico:
-                displayRightAnswer(audience);
+                if(usedHelps < maxHelps){
+                    displayRightAnswer(audience);
+                    usedHelps++;
+                }else {
+                    Toast.makeText(PlayActivity.this, "You can't use help anymore", Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.menu_llamada:
-                displayRightAnswer(phone);
+                if(usedHelps < maxHelps){
+                    displayRightAnswer(phone);
+                    usedHelps++;
+                }else {
+                    Toast.makeText(PlayActivity.this, "You can't use help anymore", Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.menu_cincuenta:
-                displayWrongAnswer(fifty1, fifty2);
+                if(usedHelps < maxHelps){
+                    displayWrongAnswer(fifty1, fifty2);
+                    usedHelps++;
+                }else {
+                    Toast.makeText(PlayActivity.this, "You can't use help anymore", Toast.LENGTH_SHORT).show();
+                }
                 break;
         }
-
-        if(intent != null)
-            startActivity(intent);
 
         supportInvalidateOptionsMenu();
         return true;
     }
 
+    private void clearAnswer(){
+        bAnswer1.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        bAnswer2.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        bAnswer3.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        bAnswer4.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+    }
+
+    private void hideAnswers(){
+        bAnswer1.setVisibility(View.GONE);
+        bAnswer2.setVisibility(View.GONE);
+        bAnswer3.setVisibility(View.GONE);
+        bAnswer4.setVisibility(View.GONE);
+    }
+
+    private void showAnswers(){
+        bAnswer1.setVisibility(View.VISIBLE);
+        bAnswer2.setVisibility(View.VISIBLE);
+        bAnswer3.setVisibility(View.VISIBLE);
+        bAnswer4.setVisibility(View.VISIBLE);
+    }
+
     private void displayRightAnswer(int answer){
-        bAnswer1.setBackgroundColor(getResources().getColor(R.color.deafultAnswer));
-        bAnswer2.setBackgroundColor(getResources().getColor(R.color.deafultAnswer));
-        bAnswer3.setBackgroundColor(getResources().getColor(R.color.deafultAnswer));
-        bAnswer4.setBackgroundColor(getResources().getColor(R.color.deafultAnswer));
+        clearAnswer();
 
         switch (answer){
             case 1:
-                bAnswer1.setBackgroundColor(getResources().getColor(R.color.rightAnswer));
+                bAnswer1.setBackgroundColor(getResources().getColor(R.color.colorLightPrimary));
                 break;
             case 2:
-                bAnswer2.setBackgroundColor(getResources().getColor(R.color.rightAnswer));
+                bAnswer2.setBackgroundColor(getResources().getColor(R.color.colorLightPrimary));
                 break;
             case 3:
-                bAnswer3.setBackgroundColor(getResources().getColor(R.color.rightAnswer));
+                bAnswer3.setBackgroundColor(getResources().getColor(R.color.colorLightPrimary));
                 break;
             case 4:
-                bAnswer4.setBackgroundColor(getResources().getColor(R.color.rightAnswer));
+                bAnswer4.setBackgroundColor(getResources().getColor(R.color.colorLightPrimary));
                 break;
         }
 
     }
 
     private void displayWrongAnswer(Integer ... answers){
-        bAnswer1.setBackgroundColor(getResources().getColor(R.color.deafultAnswer));
-        bAnswer2.setBackgroundColor(getResources().getColor(R.color.deafultAnswer));
-        bAnswer3.setBackgroundColor(getResources().getColor(R.color.deafultAnswer));
-        bAnswer4.setBackgroundColor(getResources().getColor(R.color.deafultAnswer));
+        clearAnswer();
         for(Integer answer : answers){
             switch (answer){
                 case 1:
-                    bAnswer1.setBackgroundColor(getResources().getColor(R.color.wrongAnswer));
+                    bAnswer1.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                     break;
                 case 2:
-                    bAnswer2.setBackgroundColor(getResources().getColor(R.color.wrongAnswer));
+                    bAnswer2.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                     break;
                 case 3:
-                    bAnswer3.setBackgroundColor(getResources().getColor(R.color.wrongAnswer));
+                    bAnswer3.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                     break;
                 case 4:
-                    bAnswer4.setBackgroundColor(getResources().getColor(R.color.wrongAnswer));
+                    bAnswer4.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                     break;
             }
         }
     }
 
-    private void leave(boolean won){
+    private void quit(){
+        score = computeScore(current-1);
+        tvQuestion.setText("You left!\nEarnings: " + score);
+        hideAnswers();
+        leave();
+    }
+
+    private void fail(){
+        score = computeSavedScore(current-2);
+        tvQuestion.setText("You lost!\nEarnings: " + score);
+        hideAnswers();
+        leave();
+    }
+
+    private void win(){
+        score = computeScore(current-1);
+        tvQuestion.setText("You won!\nEarnings: " + score);
+        hideAnswers();
+        leave();
+    }
+
+    private void leave(){
+        current = 1;
+        usedHelps = 0;
+
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         String name = sharedPrefs.getString("userName", getResources().getString(R.string.nameless));
-        String score;
-        if(won)
-            score = computeScore(current-1);
-        else
-            score = computeScore(current-2);
 
         //Save score in the local DB
         SQLHelper.getInstance(this).addScore(name, score);
@@ -264,6 +324,28 @@ public class PlayActivity extends AppCompatActivity {
             case 13: return "250000";
             case 14: return "500000";
             case 15: return "1000000";
+        }
+        return "";
+    }
+
+    private String computeSavedScore(int current){
+        switch(current){
+            case 0: ;
+            case 1: ;
+            case 2: ;
+            case 3: ;
+            case 4: return "0";
+            case 5: ;
+            case 6: ;
+            case 7: ;
+            case 8: ;
+            case 9: return "1000";
+            case 10: ;
+            case 11: ;
+            case 12: ;
+            case 13: ;
+            case 14: ;
+            case 15: return "32000";
         }
         return "";
     }
