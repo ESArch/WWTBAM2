@@ -11,6 +11,16 @@
     <string name="menu_llamada">Joker 2</string>
     <string name="menu_cincuenta">Joker 3</string>
     <string name="menu_abandonar">Leave</string>
+    <string name="boton_jugar">Play</string>
+    <string name="boton_puntuacion">Scores</string>
+    <string name="boton_opciones">Settings</string>
+    <string name="title">Who wants to be a millionaire?</string>
+    <string name="en_juego">Playing for: </string>
+    <string name="pregunta">Question: </string>
+    <string name="victoria">You win!</string>
+    <string name="fallo">You lost!</string>
+    <string name="abandonar">You left!</string>
+    <string name="recompensa">Winnings: </string>
     <string name="currency">$</string>
 
     <!-- Strings related to Settings -->

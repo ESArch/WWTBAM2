@@ -16,8 +16,6 @@ import android.widget.TextView;
 
 import com.example.dieaigar.wwtbam.R;
 import com.example.dieaigar.wwtbam.databases.SQLHelper;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,7 +28,14 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class ScoreActivity extends AppCompatActivity {
     int localRows, friendRows;

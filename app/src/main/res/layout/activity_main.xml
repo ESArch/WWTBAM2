@@ -13,7 +13,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Who wants to be a millionare?"
+        android:text="@string/title"
         android:textSize="50sp"
         android:textAlignment="center"
         android:textColor="@color/colorAccent"
@@ -23,14 +23,14 @@
     <Button
         android:id="@+id/bPlay"
         android:onClick="launchActivity"
-        android:text="Play"
+        android:text="@string/boton_jugar"
         android:drawableLeft="@drawable/ic_play"
         android:paddingLeft="50dp"
         style="@style/ButtonTheme"/>
 
     <Button
         android:id="@+id/bScore"
-        android:text="Scores"
+        android:text="@string/boton_puntuacion"
         android:onClick="launchActivity"
         android:drawableLeft="@drawable/ic_scores"
         android:paddingLeft="50dp"
@@ -38,7 +38,7 @@
 
     <Button
         android:id="@+id/bSettings"
-        android:text="Settings"
+        android:text="@string/boton_opciones"
         android:onClick="launchActivity"
         android:drawableLeft="@drawable/ic_settings"
         android:paddingLeft="50dp"

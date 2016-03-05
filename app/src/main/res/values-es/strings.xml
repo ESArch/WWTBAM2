@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">WWTBAM</string>
+    <string name="hint_friend">Introduce el nombre de tu amigo</string>
+    <string name="hint_name">Introduce tu nombre</string>
+    <string name="menu_abandonar">Abandonar</string>
+    <string name="menu_cincuenta">Comodín 3</string>
+    <string name="menu_credits">Créditos</string>
+    <string name="menu_llamada">Comodín 2</string>
+    <string name="menu_publico">Comodín 1</string>
+    <string name="nameless">Desconocido</string>
+    <string name="pref_title_add_friends_to_messages"></string>
+    <string name="settings_bAddFriend">Añadir amigo</string>
+    <string name="settings_help">Número de ayudas posibles</string>
+    <string name="settings_name">Nombre:</string>
+    <string name="authors">Pablo y Diego</string>
+    <string name="boton_jugar">Jugar</string>
+    <string name="boton_opciones">Opciones</string>
+    <string name="boton_puntuacion">Puntuaciones</string>
+    <string name="currency">€</string>
+    <string name="title">¿Quién quiere ser millonario?</string>
+    <string name="en_juego">Jugando por: </string>
+    <string name="pregunta">Pregunta: </string>
+    <string name="victoria">¡Has ganado!</string>
+    <string name="fallo">¡Has perdido!</string>
+    <string name="abandonar">¡Abandonaste!</string>
+    <string name="recompensa">Recompensa: </string>
+</resources>

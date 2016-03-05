@@ -114,8 +114,8 @@ public class PlayActivity extends AppCompatActivity {
 
     private void loadQuestion(int index){
 
-        tvQuestionNumber.setText("Question: " + current);
-        tvPrize.setText("Play for: " + computeScore(current) + " " + getResources().getString(R.string.currency));
+        tvQuestionNumber.setText(R.string.pregunta + current);
+        tvPrize.setText(R.string.en_juego + computeScore(current) + " " + getResources().getString(R.string.currency));
         clearAnswer();
         showAnswers();
 
@@ -269,22 +269,22 @@ public class PlayActivity extends AppCompatActivity {
 
     private void quit(){
         score = computeScore(current-1);
-        tvQuestion.setText("You left!\nEarnings: " + score);
+        tvQuestion.setText(R.string.abandonar + "\n" + R.string.recompensa + score);
         hideAnswers();
         leave();
     }
 
     private void fail(){
         score = computeSavedScore(current-2);
-        tvQuestion.setText("You lost!\nEarnings: " + score);
-        hideAnswers();
+        tvQuestion.setText(R.string.fallo + "\n" + R.string.recompensa + score);
+                hideAnswers();
         leave();
     }
 
     private void win(){
         score = computeScore(current-1);
-        tvQuestion.setText("You won!\nEarnings: " + score);
-        hideAnswers();
+        tvQuestion.setText(R.string.victoria + "\n" + R.string.recompensa + score);
+                hideAnswers();
         leave();
     }
 

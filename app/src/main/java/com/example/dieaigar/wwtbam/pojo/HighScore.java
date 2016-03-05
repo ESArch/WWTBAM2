@@ -8,6 +8,7 @@ public class HighScore implements Comparable<HighScore>{
     String latitude;
 	
 	public HighScore() {
+
 	}
 	
 	public HighScore (String name, String scoring, String longitude, String latitude) {
