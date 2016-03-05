@@ -88,6 +88,7 @@ public class ScoreActivity extends AppCompatActivity {
         row.addView(tvScore);
 
         tl.addView(row, localRows++);
+
     }
 
     private void addFriendScore(int score, String name){

@@ -64,8 +64,7 @@ public class SQLHelper extends SQLiteOpenHelper {
 
         // Get access to the database in read mode
         SQLiteDatabase database = getReadableDatabase();
-        Cursor cursor = database.query(
-                "ScoreTable", new String[]{"name", "score"}, null, null, null, null, null);
+        Cursor cursor = database.query("ScoreTable",new String[]{"name","score"},null,null,null,null,"score DESC","10");
         // Go through the resulting cursor
         while (cursor.moveToNext()) {
             item = new HashMap<>();
