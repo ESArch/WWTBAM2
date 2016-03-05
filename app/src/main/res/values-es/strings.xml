@@ -24,5 +24,6 @@
     <string name="victoria">¡Has ganado!</string>
     <string name="fallo">¡Has perdido!</string>
     <string name="abandonar">¡Abandonaste!</string>
+    <string name="ayudas">Ya no puedes utilizar más ayudas</string>
     <string name="recompensa">Recompensa: </string>
 </resources>

@@ -114,8 +114,8 @@ public class PlayActivity extends AppCompatActivity {
 
     private void loadQuestion(int index){
 
-        tvQuestionNumber.setText(R.string.pregunta + current);
-        tvPrize.setText(R.string.en_juego + computeScore(current) + " " + getResources().getString(R.string.currency));
+        tvQuestionNumber.setText(getResources().getString(R.string.pregunta) + " "+current);
+        tvPrize.setText(getResources().getString(R.string.en_juego) + " "+computeScore(current) + " " + getResources().getString(R.string.currency));
         clearAnswer();
         showAnswers();
 
@@ -181,7 +181,7 @@ public class PlayActivity extends AppCompatActivity {
                     displayRightAnswer(audience);
                     usedHelps++;
                 }else {
-                    Toast.makeText(PlayActivity.this, "You can't use help anymore", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PlayActivity.this, getResources().getString(R.string.ayudas), Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.menu_llamada:
@@ -189,7 +189,7 @@ public class PlayActivity extends AppCompatActivity {
                     displayRightAnswer(phone);
                     usedHelps++;
                 }else {
-                    Toast.makeText(PlayActivity.this, "You can't use help anymore", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PlayActivity.this, getResources().getString(R.string.ayudas), Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.menu_cincuenta:
@@ -197,7 +197,7 @@ public class PlayActivity extends AppCompatActivity {
                     displayWrongAnswer(fifty1, fifty2);
                     usedHelps++;
                 }else {
-                    Toast.makeText(PlayActivity.this, "You can't use help anymore", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PlayActivity.this, getResources().getString(R.string.ayudas), Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
@@ -269,21 +269,21 @@ public class PlayActivity extends AppCompatActivity {
 
     private void quit(){
         score = computeScore(current-1);
-        tvQuestion.setText(R.string.abandonar + "\n" + R.string.recompensa + score);
+        tvQuestion.setText(getResources().getString(R.string.abandonar) + "\n" + getResources().getString(R.string.recompensa) + " "+score);
         hideAnswers();
         leave();
     }
 
     private void fail(){
         score = computeSavedScore(current-2);
-        tvQuestion.setText(R.string.fallo + "\n" + R.string.recompensa + score);
+        tvQuestion.setText(getResources().getString(R.string.fallo) + "\n" + getResources().getString(R.string.recompensa) + " "+score);
                 hideAnswers();
         leave();
     }
 
     private void win(){
         score = computeScore(current-1);
-        tvQuestion.setText(R.string.victoria + "\n" + R.string.recompensa + score);
+        tvQuestion.setText(getResources().getString(R.string.victoria) + "\n" + getResources().getString(R.string.recompensa) + " "+score);
                 hideAnswers();
         leave();
     }

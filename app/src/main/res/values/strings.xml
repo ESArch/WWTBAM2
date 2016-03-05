@@ -21,6 +21,7 @@
     <string name="fallo">You lost!</string>
     <string name="abandonar">You left!</string>
     <string name="recompensa">Winnings: </string>
+    <string name="ayudas">You can\'t use help anymore</string>
     <string name="currency">$</string>
 
     <!-- Strings related to Settings -->
