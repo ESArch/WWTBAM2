@@ -167,8 +167,20 @@ public class ScoreActivity extends AppCompatActivity {
                         JSONObject jsonObj = new JSONObject(sBuilder.toString());
                         JSONArray scores = jsonObj.getJSONArray("scores");
 
+                        List<HighScore> highScores = new ArrayList<>();
                         for(int i = 0; i < scores.length(); i++) {
-                            addFriendScore(Integer.parseInt(scores.getJSONObject(i).get("scoring").toString()), scores.getJSONObject(i).get("name").toString());
+                            HighScore highScore = new HighScore();
+                            highScore.setScoring(scores.getJSONObject(i).get("scoring").toString());
+                            highScore.setName(scores.getJSONObject(i).get("name").toString());
+                            highScores.add(highScore);
+//                            addFriendScore(Integer.parseInt(scores.getJSONObject(i).get("scoring").toString()), scores.getJSONObject(i).get("name").toString());
+                        }
+
+                        Collections.sort(highScores,Collections.reverseOrder());
+
+                        for(int j = 0; j < highScores.size() && j < 10; j++){
+                            System.out.println(highScores.get(j).getScoring());
+                            addFriendScore(Integer.parseInt(highScores.get(j).getScoring()), highScores.get(j).getName());
                         }
                     }
                     connection.disconnect();
