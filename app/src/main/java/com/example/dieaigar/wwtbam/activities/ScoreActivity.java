@@ -16,6 +16,10 @@ import android.widget.TextView;
 
 import com.example.dieaigar.wwtbam.R;
 import com.example.dieaigar.wwtbam.databases.SQLHelper;
+import com.example.dieaigar.wwtbam.pojo.HighScore;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 
 import org.json.JSONArray;
 import org.json.JSONException;
