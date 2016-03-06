@@ -26,4 +26,8 @@
     <string name="abandonar">¡Abandonaste!</string>
     <string name="ayudas">Ya no puedes utilizar más ayudas</string>
     <string name="recompensa">Recompensa: </string>
+    <string name="amigos">Amigos</string>
+    <string name="local">Local</string>
+    <string name="borrar_puntuaciones">Borrar puntuaciones</string>
+    <string name="borradas_puntuaciones">Puntuaciones borradas</string>
 </resources>

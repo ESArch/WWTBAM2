@@ -22,6 +22,10 @@
     <string name="abandonar">You left!</string>
     <string name="recompensa">Winnings: </string>
     <string name="ayudas">You can\'t use help anymore</string>
+    <string name="local">Local</string>
+    <string name="amigos">Friends</string>
+    <string name="borrar_puntuaciones">Delete scores</string>
+    <string name="borradas_puntuaciones">Scores cleared</string>
     <string name="currency">$</string>
 
     <!-- Strings related to Settings -->

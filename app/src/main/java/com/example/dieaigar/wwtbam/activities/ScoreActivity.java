@@ -9,10 +9,13 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TabHost;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.dieaigar.wwtbam.R;
 import com.example.dieaigar.wwtbam.databases.SQLHelper;
@@ -45,6 +48,27 @@ public class ScoreActivity extends AppCompatActivity {
     int localRows, friendRows;
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_score, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.menu_abandonar_puntuacion:
+                Toast.makeText(ScoreActivity.this, getResources().getString(R.string.borradas_puntuaciones), Toast.LENGTH_SHORT).show();
+                SQLHelper.getInstance(this).clearAllScores();
+                finish();
+                startActivity(getIntent());
+                break;
+        }
+
+        supportInvalidateOptionsMenu();
+        return true;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score);
@@ -53,12 +77,12 @@ public class ScoreActivity extends AppCompatActivity {
         host.setup();
 
         TabHost.TabSpec spec = host.newTabSpec("LOCALTAB");
-        spec.setIndicator("Local");
+        spec.setIndicator(getResources().getString(R.string.local));
         spec.setContent(R.id.tab_layout_included1);
         host.addTab(spec);
 
         spec = host.newTabSpec("FRIENDSTAB");
-        spec.setIndicator("Friends");
+        spec.setIndicator(getResources().getString(R.string.amigos));
         spec.setContent(R.id.tab_layout_included2);
         host.addTab(spec);
 
