@@ -4,6 +4,6 @@
     <item
         android:id="@+id/menu_abandonar_puntuacion"
         android:title="@string/borrar_puntuaciones"
-        android:icon="@android:drawable/ic_menu_close_clear_cancel"
+        android:icon="@android:drawable/ic_menu_delete"
         app:showAsAction="always"/>
 </menu>

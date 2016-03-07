@@ -1,6 +1,5 @@
 package com.example.dieaigar.wwtbam.activities;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -10,7 +9,6 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.Xml;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,26 +17,18 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import com.example.dieaigar.wwtbam.R;
 import com.example.dieaigar.wwtbam.databases.SQLHelper;
-import com.example.dieaigar.wwtbam.pojo.Question;
-
-import android.content.res.XmlResourceParser;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlPullParserFactory;
 
 public class PlayActivity extends AppCompatActivity {
 
@@ -175,7 +165,7 @@ public class PlayActivity extends AppCompatActivity {
         switch(item.getItemId()) {
             case R.id.menu_abanonar:
                     quit();
-                break;
+                return true;
             case R.id.menu_publico:
                 if(usedHelps < maxHelps){
                     displayRightAnswer(audience);
@@ -183,7 +173,7 @@ public class PlayActivity extends AppCompatActivity {
                 }else {
                     Toast.makeText(PlayActivity.this, getResources().getString(R.string.ayudas), Toast.LENGTH_SHORT).show();
                 }
-                break;
+                return true;
             case R.id.menu_llamada:
                 if(usedHelps < maxHelps){
                     displayRightAnswer(phone);
@@ -191,7 +181,7 @@ public class PlayActivity extends AppCompatActivity {
                 }else {
                     Toast.makeText(PlayActivity.this, getResources().getString(R.string.ayudas), Toast.LENGTH_SHORT).show();
                 }
-                break;
+                return true;
             case R.id.menu_cincuenta:
                 if(usedHelps < maxHelps){
                     displayWrongAnswer(fifty1, fifty2);
@@ -199,11 +189,10 @@ public class PlayActivity extends AppCompatActivity {
                 }else {
                     Toast.makeText(PlayActivity.this, getResources().getString(R.string.ayudas), Toast.LENGTH_SHORT).show();
                 }
-                break;
+                return true;
         }
 
-        supportInvalidateOptionsMenu();
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
     private void clearAnswer(){

@@ -6,11 +6,13 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.TabHost;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -59,13 +61,12 @@ public class ScoreActivity extends AppCompatActivity {
             case R.id.menu_abandonar_puntuacion:
                 Toast.makeText(ScoreActivity.this, getResources().getString(R.string.borradas_puntuaciones), Toast.LENGTH_SHORT).show();
                 SQLHelper.getInstance(this).clearAllScores();
-                finish();
-                startActivity(getIntent());
-                break;
+                TableLayout tl = (TableLayout) findViewById(R.id.score_table_local);
+                tl.removeAllViews();
+                return true;
         }
 
-        supportInvalidateOptionsMenu();
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -112,10 +113,12 @@ public class ScoreActivity extends AppCompatActivity {
         TableRow row = new TableRow(this);
 
         TextView tvName = new TextView(this);
-        tvName.setText(name+" ");
+        tvName.setText(name + "");
+        tvName.setTextSize(16);
 
         TextView tvScore = new TextView(this);
-        tvScore.setText(score + "");
+        tvScore.setText("\t" + score);
+        tvScore.setTextSize(16);
 
         row.addView(tvName);
         row.addView(tvScore);
@@ -130,10 +133,12 @@ public class ScoreActivity extends AppCompatActivity {
         TableRow row = new TableRow(this);
 
         TextView tvName = new TextView(this);
-        tvName.setText(name+" ");
+        tvName.setText(name + "");
+        tvName.setTextSize(16);
 
         TextView tvScore = new TextView(this);
-        tvScore.setText(score + "");
+        tvScore.setText("\t" + score);
+        tvScore.setTextSize(16);
 
         row.addView(tvName);
         row.addView(tvScore);
